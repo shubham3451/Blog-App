@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Social Media{% endblock %}</title>
+
+    <!-- External Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    
+    <style>
+        /* Base Styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212; /* Dark background */
+            color: #fff; /* White text */
+        }
+
+        a {
+            color: #1da1f2; /* Twitter-like blue for links */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Center the container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Main card style */
+        .card {
+            background-color: #1c1c1c; /* Slightly lighter than the background */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .card p {
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #888;
+        }
+
+        .form-container {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            font-size: 14px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 8px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="date"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1da1f2; /* Highlight field on focus with a blue color */
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: #1da1f2;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #1681c8; /* Slightly darker blue on hover */
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+        }
+
+        .alternative-option {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .alternative-option a {
+            font-weight: bold;
+        }
+
+        /* Example button link styling */
+        .btn-link {
+            color: #1da1f2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Example button styling */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: #1da1f2;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-submit:hover {
+            background-color: #1681c8; /* Darker blue on hover */
+        }
+
+
+     
+        
+
+    </style>
+</head>
+<body>
+
+    {% block content %}{% endblock %}
+
+</body>
+</html>
+
+

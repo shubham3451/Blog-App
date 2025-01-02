@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - {{ user.username }}</title>
+
+    <!-- Google Font (Roboto) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+
+    <style>
+        /* Reset and basic setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #14171a;
+            color: #fff;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Layout for user profile info */
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .user-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 22px;
+            font-weight: 500;
+            color: #1da1f2;
+        }
+
+        .user-full-name {
+            font-size: 16px;
+            color: #bbb;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .profile-actions a {
+            background-color: #1da1f2;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .profile-actions a:hover {
+            background-color: #1991cb;
+        }
+
+         /* Search Bar */
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        #search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #1a1b1f;
+            color: #fff;
+        } 
+
+    
+
+        /* Posts Section */
+        .posts-section {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+
+        .post {
+            background-color: #1c1e22;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .author-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .author-name {
+            color: #1da1f2;
+            text-decoration: none;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #bbb;
+        }
+
+        .post-content {
+            font-size: 16px;
+            color: #ddd;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .post-image,
+        .post-video,
+        .post-audio {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            border-radius: 10px;
+            margin-top: 10px;
+            object-fit: contain;
+        }
+
+        .post-link {
+            color: #1da1f2;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+        /* Responsive handling */
+        @media (max-width: 768px) {
+            .search-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .posts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .post-image {
+                max-height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- User Info Section -->
+        <div class="user-info">
+            <img src="{% if user.profile.profile_pic %}{{ user.profile.profile_pic.url }}{% else %}profile_pic/default_profile_pic.jpeg{% endif %}" alt="">
+            <div class="user-details">
+                <a href="{% url 'profile_with_username' username=user.username %}" class="user-name">{{ user.username }}</a>
+                <p class="user-full-name">{{ user.get_full_name }}</p>
+              </div>  
+
+
+            <!-- Profile Action Buttons -->
+            <div class="profile-actions">
+                <a href={% url "createpost" %} > Create Post</a>
+                <a href="{% url 'updateprofile' %}">Edit Profile</a>
+                <a href="{% url 'changepassword' %}">Change Password</a>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="search-box" placeholder="Search for users..." autocomplete="off">
+            <div id="search-suggestions" class="suggestions-list" style="display:none;"></div>
+        </div>
+       
+
+        <!-- Posts Section -->
+        <div class="posts-section" id="posts-section">
+            {% for post in posts %}
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <img src="{% if post.author.profile.profile_pic %}{{ post.author.profile.profile_pic.url }}{% else %}profile_pic/default_profile_pic.jpeg{% endif %}" alt="Author Picture" class="author-pic">
+                            <a href="{% url 'profile_with_username' username=post.author.username %}" class="author-name">{{ post.author.username }}</a>
+                        </div>
+                        <span class="post-time">{{ post.date_posted|date:"d M Y H:i" }}</span>
+                    </div>
+                    <div class="post-content">
+                        <p>{{ post.content }}</p>
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
+                        {% elif post.video %}
+                            <video controls class="post-video">
+                                <source src="{{ post.video.url }}" type="video/mp4">
+                            </video>
+                        {% elif post.audio %}
+                            <audio controls class="post-audio">
+                                <source src="{{ post.audio.url }}" type="audio/mp3">
+                            </audio>
+                        {% elif post.link %}
+                            <a href="{{ post.link }}" target="_blank" class="post-link">{{ post.link }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- JavaScript for Search Suggestions -->
+     <script>
+        const searchBox = document.getElementById('search-box');
+        const suggestionsBox = document.getElementById('search-suggestions');
+
+        searchBox.addEventListener('input', function () {
+            const query = searchBox.value;
+            if (query.length > 0) {
+                fetch(`/search_suggestions/?q=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.results.length > 0) {
+                            suggestionsBox.innerHTML = data.results.map(username => `<div class="suggestion-item">${username}</div>`).join('');
+                            suggestionsBox.style.display = 'block';
+                        } else {
+                            suggestionsBox.innerHTML = '<div class="no-results">No results found</div>';
+                            suggestionsBox.style.display = 'block';
+                        }
+                    });
+            } else {
+                suggestionsBox.style.display = 'none';
+            }
+        });
+
+        suggestionsBox.addEventListener('click', function (event) {
+            if (event.target.classList.contains('suggestion-item')) {
+                window.location.href = `/profile/${event.target.textContent}/`;
+            }
+        });
+    </script> 
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
